@@ -1,0 +1,7 @@
+config/config.js
+node_modules
+.git
+dist
+.tmp
+.sass-cache
+.DS_Store
