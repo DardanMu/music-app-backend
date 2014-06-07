@@ -10,3 +10,9 @@ exports.index = function(req, res){
     });
   });
 };
+
+exports.songs = function(req, res){
+	res.render('home/songs', {
+		test: "jade variables ftw"
+	});
+};
