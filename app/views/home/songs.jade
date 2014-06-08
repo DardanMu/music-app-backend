@@ -2,4 +2,7 @@ extends ../layout
 
 block content
   h1 output songs here
-  h3 #{test}
+
+  ul
+  for val in data
+    li= val.SongName
