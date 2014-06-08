@@ -15,10 +15,11 @@ exports.index = function(req, res){
 
 exports.songs = function(req, res){
 
-	var apikey = '&apikey' + params.groovesharkApi.key;
+	var apikey = '&key=' + params.groovesharkApi.key;
 	var artist = req.query.artist;
+	var urlParams = params.groovesharkApi.urlParams;
 
-	var url = params.groovesharkApi.url + artist +'?format=json&limit=10' + apikey;
+	var url = params.groovesharkApi.url + artist + urlParams + apikey;
 
 	request(url, function (error, response, songs) {
 		if (!error && response.statusCode == 200) {
