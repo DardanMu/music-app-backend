@@ -22,41 +22,25 @@ exports.storeArtist = function(req, res){
 
 	Artist.findOne({ 'name': postedArtist }, 'name numberOfRequests', function (err, artist) {
 	  if (err) return handleError(err);
-
-	  console.log("in here1");
 	  
 	  if (artist != null) {
-	  	console.log("in here2");
-	  	// console.log("numofreq:" + artist.numberOfRequests);
-	  	//just update atist
-	  	// artist.numberOfRequests = artist.numberOfRequests+ 1;
-
+	  	//artist already exists in the db. Just update it.
 	  	artist.update({$inc: {numberOfRequests:1}}, function (err){
-	  		console.log("updated");
+	  		if (err) return handleError(err);
 	  	});
 
-
-	 //  	artist.save(function (err) {
-		//     if (err) return console.error(err);
-		//     console.log("saved existing artist: numofreq:" + artist.numberOfRequests);
-		// });
-
 	  }else{
-	  	console.log("in here3");
-	  	//create it
-	  	var newArtist = new Artist({ name: postedArtist, numberOfRequests: 1 });
+	  	//add the artist to the db.
+	  	var newArtist = new Artist({ name: postedArtist, numberOfRequests:1});
 
 		newArtist.save(function (err, newArtist) {
-		  if (err) return console.error(err);
+		  if (err) return handleError(err);
 		  console.log("saved into db: " + newArtist.name);
 		});
 	  }
 
 	});
 
-
-	res.json(200, {"error": "null", "artist": postedArtist});
-
-	res.send();
+	res.json(200, {"error": null, "artist": postedArtist});
 
 };
