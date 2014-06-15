@@ -21,20 +21,19 @@ exports.storeArtist = function(req, res){
 	var postedArtist = req.body.name;
 
 	Artist.findOne({ 'name': postedArtist }, 'name numberOfRequests', function (err, artist) {
-	  if (err) return handleError(err);
+	  if (err) return console.log(err);
 	  
 	  if (artist != null) {
 	  	//artist already exists in the db. Just update it.
-	  	artist.update({$inc: {numberOfRequests:1}}, function (err){
-	  		if (err) return handleError(err);
+	  	artist.update({$inc: {numberOfRequests:1}, $addToSet: {dates: new Date}}, function (err){
+	  		if (err) return console.log(err);
 	  	});
 
 	  }else{
 	  	//add the artist to the db.
-	  	var newArtist = new Artist({ name: postedArtist, numberOfRequests:1});
-
+	  	var newArtist = new Artist({ name: postedArtist, numberOfRequests:1, dates: [new Date]});
 		newArtist.save(function (err, newArtist) {
-		  if (err) return handleError(err);
+		  if (err) return console.log(err);
 		  console.log("saved into db: " + newArtist.name);
 		});
 	  }

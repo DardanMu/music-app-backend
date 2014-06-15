@@ -3,12 +3,8 @@ var mongoose = require('mongoose'),
 
 var ArtistSchema = new Schema({
   name: String,
-  numberOfRequests: Number
+  numberOfRequests: Number,
+  dates: [Date]
 });
-
-ArtistSchema.virtual('date')
-  .get(function(){
-    return this._id.getTimestamp();
-  });
 
 mongoose.model('Artist', ArtistSchema);
