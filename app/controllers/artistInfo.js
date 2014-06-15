@@ -9,6 +9,11 @@ exports.getArtist = function(req, res){
 
 	var artistData = lastFmService.getData(artist, function(error, response, artistData){
 		if (!error) {
+            // res.format({
+            //   "text/plain": function(){
+            //     res.send(artistData);
+            //   }});
+            res.set('Content-Type', 'text/plain');
 			res.send(artistData);
 		}else{
 			res.send(error);
