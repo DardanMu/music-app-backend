@@ -8,3 +8,7 @@ var ArtistSchema = new Schema({
 });
 
 mongoose.model('Artist', ArtistSchema);
+
+//need to change schema to :
+// date: Date,
+// artists: [{artistName, numberOfRequests, times}]
