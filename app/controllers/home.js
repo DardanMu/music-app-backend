@@ -12,21 +12,3 @@ exports.index = function(req, res){
     });
   });
 };
-
-exports.songs = function(req, res){
-
-	var apikey = '&key=' + params.groovesharkApi.key;
-	var artist = req.query.artist;
-	var urlParams = params.groovesharkApi.urlParams;
-
-	var url = params.groovesharkApi.url + artist + urlParams + apikey;
-
-	request(url, function (error, response, songs) {
-		if (!error && response.statusCode == 200) {
-			// res.render('home/songs', {
-			// 	data: JSON.parse(songs)
-			// });
-	 		res.send(songs);
-		}
-	});
-};
