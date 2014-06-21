@@ -33,10 +33,16 @@ exports.getArtist = function(req, res){
 	storeArtist(artist, function(){
 	});
 
-	lastFmService.getData(artist, 'info').then(function(response){
-		if (response[0].statusCode <= 300) {
-			var artistData = JSON.parse(response[0].body);
-			res.json(artistData);
+	lastFmService.getData(artist, 'info').then(function(infoRes){
+		if (infoRes[0].statusCode <= 300) {
+			var artistData = JSON.parse(infoRes[0].body);
+
+			lastFmService.getData(artist, 'events').then(function(eventRes){
+				var artistevents = JSON.parse(eventRes[0].body);
+				artistData.events = artistevents;
+				res.json(artistData);
+			});
+
 		}else{
 			res.json(500, { error: "error" });
 		}
