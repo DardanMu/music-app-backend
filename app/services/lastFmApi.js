@@ -4,12 +4,19 @@ var Q = require('q'),
 
 var lastFmApi = {
 
-	getData: function(artist) {
+	getData: function(artist, dataType) {
+		
+		if (dataType === 'info') {
+			var url = params.lastFmApi.infoUrl;
+		}else if(dataType === 'events'){
+			var url = params.lastFmApi.eventsUrl;
+		}
+
 		var apikey    = params.lastFmApi.key;
 		var urlParams = params.lastFmApi.urlParams;
-		var url       = params.lastFmApi.url + artist + urlParams + apikey;
+		var fullUrl   = url + artist + urlParams + apikey;
 
-		return request({uri: url, method: 'GET'});
+		return request({uri: fullUrl, method: 'GET'});
 	}
 }
 
