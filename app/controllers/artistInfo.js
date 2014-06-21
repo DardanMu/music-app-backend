@@ -7,12 +7,12 @@ exports.getArtist = function(req, res){
 	// /api/artist?name=madonna
 	var artist = req.query.name;
 
-	var artistData = lastFmService.getData(artist, function(error, response, artistData){
-		if (!error) {
-            res.set('Content-Type', 'text/plain');
-			res.send(artistData);
+	var artistData = lastFmService.getData(artist).then(function(response){
+		if (response[0].statusCode <= 300) {
+	        res.set('Content-Type', 'text/plain');
+			res.send(response[0].body);
 		}else{
-			res.send(error);
+			res.json(500, { error: "error" });
 		}
 	});
 };
