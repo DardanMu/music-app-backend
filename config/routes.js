@@ -9,5 +9,5 @@ module.exports = function(app){
 	app.get('/api/songs', songs.index);
 	app.get('/api/artist', artistInfo.getArtist);
 	
-	app.post('/api/artist', artistInfo.storeArtist);
+	// app.post('/api/artist', artistInfo.storeArtist);
 };

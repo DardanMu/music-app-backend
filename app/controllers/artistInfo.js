@@ -1,25 +1,8 @@
 var mongoose = require('mongoose');
 var Artist = mongoose.model('Artist');
-
 var lastFmService = require('../services/LastFmApi');
 
-exports.getArtist = function(req, res){
-	// /api/artist?name=madonna
-	var artist = req.query.name;
-
-	var artistData = lastFmService.getData(artist).then(function(response){
-		if (response[0].statusCode <= 300) {
-	        res.set('Content-Type', 'text/plain');
-			res.send(response[0].body);
-		}else{
-			res.json(500, { error: "error" });
-		}
-	});
-};
-
-exports.storeArtist = function(req, res){
-
-	var postedArtist = req.body.name;
+var storeArtist = function(postedArtist, callback){
 
 	Artist.findOne({ 'name': postedArtist }, 'name numberOfRequests', function (err, artist) {
 	  if (err) return console.log(err);
@@ -40,7 +23,22 @@ exports.storeArtist = function(req, res){
 	  }
 
 	});
+};
 
-	res.json(200, {"error": null, "artist": postedArtist});
 
+exports.getArtist = function(req, res){
+	// /api/artist?name=madonna
+	var artist = req.query.name;
+
+	storeArtist(artist, function(){
+	});
+
+	var artistData = lastFmService.getData(artist).then(function(response){
+		if (response[0].statusCode <= 300) {
+	        res.set('Content-Type', 'text/plain');
+			res.send(response[0].body);
+		}else{
+			res.json(500, { error: "error" });
+		}
+	});
 };
