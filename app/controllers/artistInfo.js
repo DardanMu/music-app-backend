@@ -25,7 +25,7 @@ var storeArtist = function(postedArtist, callback){
 	});
 };
 
-
+var artistData;
 exports.getArtist = function(req, res){
 	// /api/artist?name=madonna
 	var artist = req.query.name;
@@ -33,18 +33,17 @@ exports.getArtist = function(req, res){
 	storeArtist(artist, function(){
 	});
 
-	lastFmService.getData(artist, 'info').then(function(infoRes){
-		if (infoRes[0].statusCode <= 300) {
-			var artistData = JSON.parse(infoRes[0].body);
-
-			lastFmService.getData(artist, 'events').then(function(eventRes){
-				var artistevents = JSON.parse(eventRes[0].body);
-				artistData.events = artistevents;
-				res.json(artistData);
-			});
-
-		}else{
+	lastFmService
+		.getData(artist, 'info')
+		.then(function(infoRes){
+			artistData = JSON.parse(infoRes[0].body);
+			return lastFmService.getData(artist, 'events');
+		}).then(function(eventRes){
+			var artistevents = JSON.parse(eventRes[0].body);
+			artistData.events = artistevents;
+			res.json(artistData);
+		}).fail(function(error){
+			console.log(error);
 			res.json(500, { error: "error" });
-		}
-	});
+		});
 };
