@@ -43,7 +43,7 @@ exports.getArtist = function(req, res){
 			return lastFmService.getData(artist, 'events');
 		}).then(function(eventRes){
 			//add events object to artistData, which already has the info object
-			artistData.events = JSON.parse(eventRes[0].body);
+			artistData.events = JSON.parse(eventRes[0].body).events;
 			res.json(artistData);
 		}).fail(function(error){
 			//if any of the above promises fail, we come here...
