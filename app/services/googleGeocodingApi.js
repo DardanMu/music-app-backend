@@ -4,17 +4,16 @@ var Q = require('q'),
 
 var googleGeocodingApi = {
 
-	getData: function(artist, dataType) {
-		
-		if (dataType === 'info') {
-			var url = params.lastFmApi.infoUrl;
-		}else if(dataType === 'events'){
-			var url = params.lastFmApi.eventsUrl;
-		}
+	getlocationData: function(cordinates) {
 
-		var apikey    = params.lastFmApi.key;
-		var urlParams = params.lastFmApi.urlParams;
-		var fullUrl   = url + artist + urlParams + apikey;
+		var url       = params.googleGeocodingApi.url;
+		var urlParams = params.googleGeocodingApi.urlParams;
+        var apikey    = params.googleGeocodingApi.key;
+        var latlng    = cordinates['latitude'] + ','+ cordinates['longitude'];
+
+		var fullUrl   = url + urlParams + latlng + apikey;
+
+        console.log(fullUrl);
 
 		return request({uri: fullUrl, method: 'GET'});
 	}

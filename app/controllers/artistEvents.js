@@ -1,16 +1,19 @@
-var lastFmService = require('../services/LastFmApi');
+var googleGeocodingService = require('../services/googleGeocodingApi');
 
 exports.getEventsByLocation = function(req, res){
 	// /api/events?artist=madonna&long=50.32345&lat=-0.634575
 	var artist = req.query.artist;
-	var cordinates = {longitude: req.query.long, latitude: req.query.lat}
+	var cordinates = {latitude: req.query.lat, longitude: req.query.long};
+
+    googleGeocodingService
+	   .getlocationData(cordinates)
+       .then(function(locData){
+            var usersLocation = JSON.parse(locData[0].body);
+            res.json(usersLocation);
+       });
 
 
-
-
-
-
-	// lastFmService
+	// googleGeocodingService
 	// 	.getData(artist, 'info')
 	// 	.then(function(infoRes){
 	// 		var artistData = JSON.parse(infoRes[0].body);
