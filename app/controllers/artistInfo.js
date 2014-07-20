@@ -24,9 +24,7 @@ var storeArtist = function(postedArtist, callback){
 
 	});
 };
-//global variable, so we can use the result of
-//the first lastFmService promise in the second.
-var artistData;
+
 exports.getArtist = function(req, res){
 	// /api/artist?name=madonna
 	var artist = req.query.name;
@@ -34,16 +32,12 @@ exports.getArtist = function(req, res){
 	lastFmService
 		.getData(artist, 'info')
 		.then(function(infoRes){
-			artistData = JSON.parse(infoRes[0].body);
+			var artistData = JSON.parse(infoRes[0].body);
 			//store the requested artist in the DB.
 			//this runs asynchronously, so no delay to send the data
 			storeArtist(artistData.artist.name, function(){
 			});
-
-			return lastFmService.getData(artist, 'events');
-		}).then(function(eventRes){
-			//add events object to artistData, which already has the info object
-			artistData.events = JSON.parse(eventRes[0].body).events;
+			
 			res.json(artistData);
 		}).fail(function(error){
 			//if any of the above promises fail, we come here...
