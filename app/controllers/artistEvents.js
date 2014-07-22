@@ -9,20 +9,15 @@ exports.getEventsByLocation = function(req, res){
 	   .getlocationData(cordinates)
        .then(function(locData){
             var usersLocation = JSON.parse(locData[0].body);
+
+            //get users city/country
+            //call last fm events api for artist
+            //return all events by relevent location
+
             res.json(usersLocation);
        });
 
 
-	// googleGeocodingService
-	// 	.getData(artist, 'info')
-	// 	.then(function(infoRes){
-	// 		var artistData = JSON.parse(infoRes[0].body);
-	// 		//store the requested artist in the DB.
-	// 		//this runs asynchronously, so no delay to send the data
-	// 		storeArtist(artistData.artist.name, function(){
-	// 		});
-			
-	// 		res.json(artistData);
 	// 	}).fail(function(error){
 	// 		//if any of the above promises fail, we come here...
 	// 		console.log(error);
