@@ -19,27 +19,36 @@ exports.getEventsByLocation = function(req, res){
 
             	if(location.types.indexOf('locality') != -1)
 				{  
-				   var city = location.long_name.toLowerCase();
+				   var usersCity = location.long_name.toLowerCase();
 				}
 
 				if(location.types.indexOf('country') != -1)
 				{  
-				   var country = location.long_name.toLowerCase();
+				   var usersCountry = location.long_name.toLowerCase();
 				}
             };
 
-            console.log(city);
-            console.log(country);
 
-
-            res.json(usersLocation);
+            // res.json(usersLocation);
 
 	        lastFmService
 				.getData(artist, 'events')
 				.then(function(events){
 					var eventData = JSON.parse(events[0].body);
 
+					var releventEvents = [];
+
 					//event location is in the same city as the users, return it.
+					for (var i = 0; i < eventData.events.event.length; i++) {
+						var artistEvent = eventData.events.event[i];
+
+						if (artistEvent.venue.location.city.toLowerCase() == usersCity && artistEvent.venue.location.country.toLowerCase() == usersCountry) {
+							releventEvents.push(artistEvent); 
+						}
+					};
+
+					eventData.events = releventEvents;
+
 					
 					res.json(eventData);
 				});
