@@ -11,6 +11,29 @@ exports.getEventsByLocation = function(req, res){
        .then(function(locData){
             var usersLocation = JSON.parse(locData[0].body);
 
+            // var city = ;
+            // var country = ;
+
+            for (var i = 0; i < usersLocation.results[0].address_components.length; i++) {
+            	var location = usersLocation.results[0].address_components[i];
+
+            	if(location.types.indexOf('locality') != -1)
+				{  
+				   var city = location.long_name.toLowerCase();
+				}
+
+				if(location.types.indexOf('country') != -1)
+				{  
+				   var country = location.long_name.toLowerCase();
+				}
+            };
+
+            console.log(city);
+            console.log(country);
+
+
+            res.json(usersLocation);
+
 	        lastFmService
 				.getData(artist, 'events')
 				.then(function(events){

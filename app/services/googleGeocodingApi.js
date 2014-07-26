@@ -13,8 +13,6 @@ var googleGeocodingApi = {
 
 		var fullUrl   = url + urlParams + latlng + apikey;
 
-        console.log(fullUrl);
-
 		return request({uri: fullUrl, method: 'GET'});
 	}
 }
