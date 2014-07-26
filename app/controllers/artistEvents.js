@@ -1,4 +1,5 @@
 var googleGeocodingService = require('../services/googleGeocodingApi');
+var lastFmService = require('../services/LastFmApi');
 
 exports.getEventsByLocation = function(req, res){
 	// /api/events?artist=madonna&long=50.32345&lat=-0.634575
@@ -10,11 +11,15 @@ exports.getEventsByLocation = function(req, res){
        .then(function(locData){
             var usersLocation = JSON.parse(locData[0].body);
 
-            //get users city/country
-            //call last fm events api for artist
-            //return all events by relevent location
+	        lastFmService
+				.getData(artist, 'events')
+				.then(function(events){
+					var eventData = JSON.parse(events[0].body);
 
-            res.json(usersLocation);
+					//event location is in the same city as the users, return it.
+					
+					res.json(eventData);
+				});
        });
 
 
