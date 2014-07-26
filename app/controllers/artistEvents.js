@@ -39,7 +39,7 @@ exports.getEventsByLocation = function(req, res){
 							if (artistEvent.venue.location.city.toLowerCase() == usersCity && artistEvent.venue.location.country.toLowerCase() == usersCountry) {
 								releventEvents.push(artistEvent); 
 							}
-			    		};
+			    		}
 			    		//if releventEvents.length() < 3
 			    			//run the above for code again, but only check if the event location is the country
 					}
