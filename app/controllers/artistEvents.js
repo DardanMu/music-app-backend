@@ -11,9 +11,6 @@ exports.getEventsByLocation = function(req, res){
        .then(function(locData){
             var usersLocation = JSON.parse(locData[0].body);
 
-            // var city = ;
-            // var country = ;
-
             for (var i = 0; i < usersLocation.results[0].address_components.length; i++) {
             	var location = usersLocation.results[0].address_components[i];
 
@@ -28,36 +25,34 @@ exports.getEventsByLocation = function(req, res){
 				}
             };
 
-
-            // res.json(usersLocation);
-
 	        lastFmService
 				.getData(artist, 'events')
 				.then(function(events){
 					var eventData = JSON.parse(events[0].body);
 
+					//array of events located within the users city
 					var releventEvents = [];
+					if (eventData.events.event) {
+						for (var i = 0; i < eventData.events.event.length; i++) {
+							var artistEvent = eventData.events.event[i];
 
-					//event location is in the same city as the users, return it.
-					for (var i = 0; i < eventData.events.event.length; i++) {
-						var artistEvent = eventData.events.event[i];
-
-						if (artistEvent.venue.location.city.toLowerCase() == usersCity && artistEvent.venue.location.country.toLowerCase() == usersCountry) {
-							releventEvents.push(artistEvent); 
-						}
-					};
+							if (artistEvent.venue.location.city.toLowerCase() == usersCity && artistEvent.venue.location.country.toLowerCase() == usersCountry) {
+								releventEvents.push(artistEvent); 
+							}
+			    		};
+			    		//if releventEvents.length() < 3
+			    			//run the above for code again, but only check if the event location is the country
+					}
 
 					eventData.events = releventEvents;
 
-					
 					res.json(eventData);
+				}).fail(function(error){
+					console.log(error);
+					res.json(500, { error: "error" });
 				});
-       });
-
-
-	// 	}).fail(function(error){
-	// 		//if any of the above promises fail, we come here...
-	// 		console.log(error);
-	// 		res.json(500, { error: "error" });
-	// 	});
+       }).fail(function(error){
+			console.log(error);
+			res.json(500, { error: "error" });
+		});
 };
