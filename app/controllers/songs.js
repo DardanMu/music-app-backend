@@ -9,7 +9,7 @@ exports.index = function(req, res){
             res.set('Content-Type', 'text/plain');
             res.send(response[0].body);
         }else{
-        	res.json(500, { error: "error" });
+            res.json(500, { error: "error" });
         }
     });
 };

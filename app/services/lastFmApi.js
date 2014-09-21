@@ -4,20 +4,20 @@ var Q = require('q'),
 
 var lastFmApi = {
 
-	getData: function(artist, dataType) {
-		
-		if (dataType === 'info') {
-			var url = params.lastFmApi.infoUrl;
-		}else if(dataType === 'events'){
-			var url = params.lastFmApi.eventsUrl;
-		}
+    getData: function(artist, dataType) {
 
-		var apikey    = params.lastFmApi.key;
-		var urlParams = params.lastFmApi.urlParams;
-		var fullUrl   = url + artist + urlParams + apikey;
+        if (dataType === 'info') {
+            var url = params.lastFmApi.infoUrl;
+        }else if(dataType === 'events'){
+            var url = params.lastFmApi.eventsUrl;
+        }
 
-		return request({uri: fullUrl, method: 'GET'});
-	}
+        var apikey    = params.lastFmApi.key;
+        var urlParams = params.lastFmApi.urlParams;
+        var fullUrl   = url + artist + urlParams + apikey;
+
+        return request({uri: fullUrl, method: 'GET'});
+    }
 }
 
 module.exports = lastFmApi;
