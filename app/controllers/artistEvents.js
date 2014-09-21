@@ -5,23 +5,22 @@ var searchForEventsByLocation = function(locationType, eventData, usersCity, use
 {
     var eventsByLoc = [];
     for (var i = 0; i < eventData.events.event.length; i++) {
-    var artistEvent = eventData.events.event[i];
+        var artistEvent = eventData.events.event[i];
 
         if (locationType === 'city') {
             if (artistEvent.venue.location.city.toLowerCase() == usersCity && artistEvent.venue.location.country.toLowerCase() == usersCountry) {
                 eventsByLoc.push(artistEvent);
             }
 
+        //to prevent duplicated events in the releventEvents array, we dont add in events from the users city again.
         }else if(locationType === 'country') {
-            if (artistEvent.venue.location.country.toLowerCase() == usersCountry) {
+            if (artistEvent.venue.location.country.toLowerCase() == usersCountry && artistEvent.venue.location.city.toLowerCase() != usersCity) {
                 eventsByLoc.push(artistEvent);
             }
         }
-
     }
 
     return eventsByLoc;
-
 }
 
 exports.getEventsByLocation = function(req, res){
@@ -55,20 +54,18 @@ exports.getEventsByLocation = function(req, res){
                 .then(function(events){
                     var eventData = JSON.parse(events[0].body);
 
-                    //array of events located close to the user
-                    var releventEvents = [];
                     if (eventData.events.event) {
-
-                        releventEvents.concat(searchForEventsByLocation('city', eventData, usersCity, usersCountry));
+                        var releventEvents = searchForEventsByLocation('city', eventData, usersCity, usersCountry);
 
                         if (releventEvents.length < 3) {
-                            releventEvents.concat(searchForEventsByLocation('country', eventData, usersCity, usersCountry));
+                            releventEvents = releventEvents.concat(searchForEventsByLocation('country', eventData, usersCity, usersCountry));
                         }
                     }
 
                     eventData.events = releventEvents;
-
+                    //return only event data relevent to the user
                     res.json(eventData);
+
                 }).fail(function(error){
                     console.log(error);
                     res.json(500, { error: "error" });
