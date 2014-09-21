@@ -59,10 +59,10 @@ exports.getEventsByLocation = function(req, res){
                     var releventEvents = [];
                     if (eventData.events.event) {
 
-                        releventEvents.push(searchForEventsByLocation('city', eventData, usersCity, usersCountry));
+                        releventEvents.concat(searchForEventsByLocation('city', eventData, usersCity, usersCountry));
 
                         if (releventEvents.length < 3) {
-                            releventEvents.push(searchForEventsByLocation('country', eventData, usersCity, usersCountry));
+                            releventEvents.concat(searchForEventsByLocation('country', eventData, usersCity, usersCountry));
                         }
                     }
 
