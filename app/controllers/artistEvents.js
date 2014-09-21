@@ -6,6 +6,7 @@ exports.getEventsByLocation = function(req, res){
 	var artist = req.query.artist;
 	var cordinates = {latitude: req.query.lat, longitude: req.query.long};
 
+	//step 1: decode users coordinates to get their city and country.
     googleGeocodingService
 	   .getlocationData(cordinates)
        .then(function(locData){
@@ -25,6 +26,7 @@ exports.getEventsByLocation = function(req, res){
 				}
             };
 
+            //step 2: search for events by artist, then return all events in the users city
 	        lastFmService
 				.getData(artist, 'events')
 				.then(function(events){
