@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
   Article = mongoose.model('Article');
 var request = require('request');
-var params = require('../../config/parameters');
+var params = require('../../../config/parameters');
 
 exports.index = function(req, res){
   Article.find(function(err, articles){

@@ -1,5 +1,5 @@
-var googleGeocodingService = require('../services/googleGeocodingApi');
-var lastFmService = require('../services/LastFmApi');
+var googleGeocodingService = require('../../services/googleGeocodingApi');
+var lastFmService = require('../../services/LastFmApi');
 
 var searchForEventsByLocation = function(locationType, eventData, usersCity, usersCountry)
 {
@@ -23,7 +23,7 @@ var searchForEventsByLocation = function(locationType, eventData, usersCity, use
     return eventsByLoc;
 }
 
-exports.getEventsByLocation = function(req, res){
+exports.getArtistEventsByLocation = function(req, res){
     // /api/events?artist=madonna&long=50.32345&lat=-0.634575
     var artist = req.query.artist;
     var cordinates = {latitude: req.query.lat, longitude: req.query.long};

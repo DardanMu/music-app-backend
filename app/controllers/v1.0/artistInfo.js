@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Artist = mongoose.model('Artist');
-var lastFmService = require('../services/LastFmApi');
+var lastFmService = require('../../services/LastFmApi');
 
 var storeArtist = function(postedArtist, callback){
 

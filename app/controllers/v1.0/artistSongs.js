@@ -1,6 +1,6 @@
-var groovesharkService = require('../services/groovesharkApi');
+var groovesharkService = require('../../services/groovesharkApi');
 
-exports.index = function(req, res){
+exports.getSongsByArtist = function(req, res){
 
     var artist = req.query.artist;
 
