@@ -53,9 +53,10 @@ exports.getEventsByLocation = function(req, res){
                 .getData(artist, 'events')
                 .then(function(events){
                     var eventData = JSON.parse(events[0].body);
+                    var releventEvents = [];
 
                     if (eventData.events.event) {
-                        var releventEvents = searchForEventsByLocation('city', eventData, usersCity, usersCountry);
+                        releventEvents = searchForEventsByLocation('city', eventData, usersCity, usersCountry);
 
                         if (releventEvents.length < 3) {
                             releventEvents = releventEvents.concat(searchForEventsByLocation('country', eventData, usersCity, usersCountry));
