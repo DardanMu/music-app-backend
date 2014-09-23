@@ -4,7 +4,7 @@ var Q = require('q'),
 
 var lastFmApi = {
 
-    getData: function(artist, dataType) {
+    getArtistData: function(artist, dataType) {
 
         if (dataType === 'info') {
             var url = params.lastFmApi.infoUrl;

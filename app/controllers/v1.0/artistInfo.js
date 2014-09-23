@@ -30,7 +30,7 @@ exports.getArtist = function(req, res){
     var artist = req.query.name;
 
     lastFmService
-        .getData(artist, 'info')
+        .getArtistData(artist, 'info')
         .then(function(infoRes){
             var artistData = JSON.parse(infoRes[0].body);
             //store the requested artist in the DB.

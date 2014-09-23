@@ -32,34 +32,20 @@ exports.getArtistEventsByLocation = function(req, res){
     googleGeocodingService
        .getlocationData(cordinates)
        .then(function(locData){
-            var usersLocation = JSON.parse(locData[0].body);
-
-            for (var i = 0; i < usersLocation.results[0].address_components.length; i++) {
-                var location = usersLocation.results[0].address_components[i];
-
-                if(location.types.indexOf('locality') != -1)
-                {
-                   var usersCity = location.long_name.toLowerCase();
-                }
-
-                if(location.types.indexOf('country') != -1)
-                {
-                   var usersCountry = location.long_name.toLowerCase();
-                }
-            };
+            var usersLocation = googleGeocodingService.getUsersCityAndCountry(locData);
 
             //step 2: search for events by artist, then return all events in the users city
             lastFmService
-                .getData(artist, 'events')
+                .getArtistData(artist, 'events')
                 .then(function(events){
                     var eventData = JSON.parse(events[0].body);
                     var releventEvents = [];
-
+                    //if the returned artist data has events, pick out the events held in the users city;
                     if (eventData.events.event) {
-                        releventEvents = searchForEventsByLocation('city', eventData, usersCity, usersCountry);
-
+                        releventEvents = searchForEventsByLocation('city', eventData, usersLocation.city, usersLocation.country);
+                        //if there are less than 3 events in the users city, pick out events in their country too.
                         if (releventEvents.length < 3) {
-                            releventEvents = releventEvents.concat(searchForEventsByLocation('country', eventData, usersCity, usersCountry));
+                            releventEvents = releventEvents.concat(searchForEventsByLocation('country', eventData, usersLocation.city, usersLocation.country));
                         }
                     }
 
