@@ -73,12 +73,12 @@ exports.getArtistEventsByLocation = function(req, res){
         getArtistEvents(artist, usersLocation)
         .then(function(eventData) {
             res.json(eventData);
-        }).fail(function(errorMessage){
-            res.json(500, { error: errorMessage });
+        }).fail(function(error){
+            res.json(500, { error: '' + error });
         });
 
-    }).catch(function(errorMessage){
-        console.log(errorMessage);
-        res.json(500, { error: errorMessage });
+    }).catch(function(error){
+        console.log(error);
+        res.json(500, { error: '' + error });
     });
 };
