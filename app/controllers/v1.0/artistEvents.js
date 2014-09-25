@@ -43,6 +43,7 @@ var getArtistEvents = function(artist, usersLocation)
             }
 
             eventData.events = releventEvents;
+            eventData.location = usersLocation;
 
             //return only event data relevent to the user
             deferred.resolve(eventData);
@@ -61,14 +62,11 @@ exports.getArtistEventsByLocation = function(req, res){
     var artist = req.query.artist;
     var cordinates = {latitude: req.query.lat, longitude: req.query.long};
 
-    //check for location data cookie on request,
+    //check for location data in the users cookie,
     //if found: dont run googleGeocodingService functions, skip to getArtistEvents
+    if (req.cookies.location) {
 
-
-    googleGeocodingService
-    .getlocationData(cordinates)
-    .then(function(locData){
-        var usersLocation = googleGeocodingService.getUsersCityAndCountry(locData);
+        var usersLocation = JSON.parse(req.cookies.location);
 
         getArtistEvents(artist, usersLocation)
         .then(function(eventData) {
@@ -77,8 +75,27 @@ exports.getArtistEventsByLocation = function(req, res){
             res.json(500, { error: '' + error });
         });
 
-    }).catch(function(error){
-        console.log(error);
-        res.json(500, { error: '' + error });
-    });
+    }else{
+
+        googleGeocodingService
+        .getlocationData(cordinates)
+        .then(function(locData){
+            var usersLocation = googleGeocodingService.getUsersCityAndCountry(locData);
+
+            res.cookie('location', JSON.stringify({city: usersLocation.city, country: usersLocation.country}));
+
+            getArtistEvents(artist, usersLocation)
+            .then(function(eventData) {
+                res.json(eventData);
+            }).fail(function(error){
+                res.json(500, { error: '' + error });
+            });
+
+        }).catch(function(error){
+            console.log(error);
+            res.json(500, { error: '' + error });
+        });
+    }
+
+
 };
