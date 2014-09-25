@@ -1,5 +1,6 @@
 var googleGeocodingService = require('../../services/googleGeocodingApi');
 var lastFmService = require('../../services/LastFmApi');
+var Q = require('q');
 
 var searchForEventsByLocation = function(locationType, eventData, usersCity, usersCountry)
 {
@@ -23,42 +24,61 @@ var searchForEventsByLocation = function(locationType, eventData, usersCity, use
     return eventsByLoc;
 }
 
+var getArtistEvents = function(artist, usersLocation)
+{
+    var deferred = Q.defer();
+
+    lastFmService
+    .getArtistData(artist, 'events')
+    .then(function(events){
+        var eventData = JSON.parse(events[0].body);
+        var releventEvents = [];
+            //if the returned artist data has events, pick out the events held in the users city;
+            if (eventData.events.event) {
+                releventEvents = searchForEventsByLocation('city', eventData, usersLocation.city, usersLocation.country);
+                //if there are less than 3 events in the users city, pick out events in their country too.
+                if (releventEvents.length < 3) {
+                    releventEvents = releventEvents.concat(searchForEventsByLocation('country', eventData, usersLocation.city, usersLocation.country));
+                }
+            }
+
+            eventData.events = releventEvents;
+
+            //return only event data relevent to the user
+            deferred.resolve(eventData);
+
+        }).fail(function(error){
+            console.log(error);
+            deferred.reject(error);
+        });
+
+    return deferred.promise;
+}
+
+
 exports.getArtistEventsByLocation = function(req, res){
-    // /api/events?artist=madonna&long=50.32345&lat=-0.634575
+    // /api/v1.0/eventsByArtist?artist=cher&lat=30.276391&long=-97.732422
     var artist = req.query.artist;
     var cordinates = {latitude: req.query.lat, longitude: req.query.long};
 
-    //step 1: decode users coordinates to get their city and country.
+    //check for location data cookie on request,
+    //if found: dont run googleGeocodingService functions, skip to getArtistEvents
+
+
     googleGeocodingService
-       .getlocationData(cordinates)
-       .then(function(locData){
-            var usersLocation = googleGeocodingService.getUsersCityAndCountry(locData);
+    .getlocationData(cordinates)
+    .then(function(locData){
+        var usersLocation = googleGeocodingService.getUsersCityAndCountry(locData);
 
-            //step 2: search for events by artist, then return all events in the users city
-            lastFmService
-                .getArtistData(artist, 'events')
-                .then(function(events){
-                    var eventData = JSON.parse(events[0].body);
-                    var releventEvents = [];
-                    //if the returned artist data has events, pick out the events held in the users city;
-                    if (eventData.events.event) {
-                        releventEvents = searchForEventsByLocation('city', eventData, usersLocation.city, usersLocation.country);
-                        //if there are less than 3 events in the users city, pick out events in their country too.
-                        if (releventEvents.length < 3) {
-                            releventEvents = releventEvents.concat(searchForEventsByLocation('country', eventData, usersLocation.city, usersLocation.country));
-                        }
-                    }
-
-                    eventData.events = releventEvents;
-                    //return only event data relevent to the user
-                    res.json(eventData);
-
-                }).fail(function(error){
-                    console.log(error);
-                    res.json(500, { error: "error" });
-                });
-       }).fail(function(error){
-            console.log(error);
-            res.json(500, { error: "error" });
+        getArtistEvents(artist, usersLocation)
+        .then(function(eventData) {
+            res.json(eventData);
+        }).fail(function(errorMessage){
+            res.json(500, { error: errorMessage });
         });
+
+    }).catch(function(errorMessage){
+        console.log(errorMessage);
+        res.json(500, { error: errorMessage });
+    });
 };
