@@ -76,7 +76,6 @@ exports.getArtistEventsByLocation = function(req, res){
         });
 
     }else{
-
         googleGeocodingService
         .getlocationData(cordinates)
         .then(function(locData){

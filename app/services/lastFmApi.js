@@ -17,6 +17,17 @@ var lastFmApi = {
         var fullUrl   = url + artist + urlParams + apikey;
 
         return request({uri: fullUrl, method: 'GET'});
+    },
+
+    getGeoEvents: function(location) {
+
+        var url = params.lastFmApi.geoEventsUrl;
+
+        var apikey    = params.lastFmApi.key;
+        var urlParams = params.lastFmApi.urlParams;
+        var fullUrl   = url + location + urlParams + apikey;
+
+        return request({uri: fullUrl, method: 'GET'});
     }
 }
 

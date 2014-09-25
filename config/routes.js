@@ -8,8 +8,7 @@ module.exports = function(app){
 
     //general/homepage api endpoints
     app.get('/', home.index);
-
-    // app.get('/api/v1.0/eventsByLocation', home.index);
+    app.get('/api/v1.0/eventsByLocation', home.getAllEventsByLocation);
 
     //artist specific api endpoints
     app.get('/api/v1.0/songsByArtist', artistSongs.getSongsByArtist);
