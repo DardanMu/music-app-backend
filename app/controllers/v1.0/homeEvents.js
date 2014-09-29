@@ -2,10 +2,6 @@ var googleGeocodingService = require('../../services/googleGeocodingApi');
 var lastFmService = require('../../services/LastFmApi');
 var Q = require('q');
 
-exports.index = function(req, res){
-    res.send('welcome...');
-};
-
 var getGeoEvents = function(usersLocation)
 {
     var deferred = Q.defer();

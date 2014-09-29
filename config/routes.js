@@ -1,14 +1,16 @@
 module.exports = function(app){
 
-    //home route
-    var home = require('../app/controllers/v1.0/home');
+    var homeEvents = require('../app/controllers/v1.0/homeEvents');
+    var homeTrends = require('../app/controllers/v1.0/homeTrends');
+
     var artistSongs = require('../app/controllers/v1.0/artistSongs');
     var artistInfo = require('../app/controllers/v1.0/artistInfo');
     var artistEvents = require('../app/controllers/v1.0/artistEvents');
 
     //general/homepage api endpoints
-    app.get('/', home.index);
-    app.get('/api/v1.0/eventsByLocation', home.getAllEventsByLocation);
+    // app.get('/', home.index);
+    app.get('/api/v1.0/eventsByLocation', homeEvents.getAllEventsByLocation);
+    app.get('/api/v1.0/hypedArtists', homeTrends.getCurrentHypedArtists);
 
     //artist specific api endpoints
     app.get('/api/v1.0/songsByArtist', artistSongs.getSongsByArtist);
