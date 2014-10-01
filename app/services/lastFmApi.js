@@ -19,13 +19,36 @@ var lastFmApi = {
         return request({uri: fullUrl, method: 'GET'});
     },
 
-    getGeoEvents: function(location) {
+    getGeoEvents: function(cordinates) {
 
         var url = params.lastFmApi.geoEventsUrl;
+        var latlng    = '&latitude=' + cordinates['latitude'] + '&longitude=' + cordinates['longitude'];
 
         var apikey    = params.lastFmApi.key;
         var urlParams = params.lastFmApi.urlParams;
-        var fullUrl   = url + location + urlParams + apikey;
+        var fullUrl   = url + latlng + urlParams + apikey;
+
+        return request({uri: fullUrl, method: 'GET'});
+    },
+
+    getHypedArtists: function() {
+
+        var url = params.lastFmApi.hypedArtistsUrl;
+
+        var apikey    = params.lastFmApi.key;
+        var urlParams = params.lastFmApi.urlParams;
+        var fullUrl   = url + urlParams + apikey;
+
+        return request({uri: fullUrl, method: 'GET'});
+    },
+
+    getGeoTopArtists: function(location) {
+
+        var url = params.lastFmApi.geoTopArtistsUrl;
+
+        var apikey    = params.lastFmApi.key;
+        var urlParams = params.lastFmApi.urlParams;
+        var fullUrl   = url + location.country + urlParams + apikey;
 
         return request({uri: fullUrl, method: 'GET'});
     }
