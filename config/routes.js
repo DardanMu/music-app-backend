@@ -11,6 +11,7 @@ module.exports = function(app){
     // app.get('/', home.index);
     app.get('/api/v1.0/eventsByLocation', homeEvents.getAllEventsByLocation);
     app.get('/api/v1.0/hypedArtists', homeTrends.getCurrentHypedArtists);
+    app.get('/api/v1.0/topArtistsByLocation', homeTrends.getTopArtistsByLocation);
 
     //artist specific api endpoints
     app.get('/api/v1.0/songsByArtist', artistSongs.getSongsByArtist);
