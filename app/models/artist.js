@@ -3,12 +3,7 @@ var mongoose = require('mongoose'),
 
 var ArtistSchema = new Schema({
   name: String,
-  numberOfRequests: Number,
-  dates: [Date]
+  numberOfRequests: Number
 });
 
 mongoose.model('Artist', ArtistSchema);
-
-//need to change schema to :
-// date: Date,
-// artists: [{artistName, numberOfRequests, times}]
