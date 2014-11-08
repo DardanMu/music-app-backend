@@ -1,0 +1,27 @@
+
+var params = {
+  groovesharkApi: {
+    url       : 'http://tinysong.com/s/',
+    urlParams : '?format=json&limit=10',
+    key       : '~'
+  },
+  lastFmApi: {
+    infoUrl      : 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=',
+    eventsUrl    : 'http://ws.audioscrobbler.com/2.0/?method=artist.getevents&artist=',
+
+    geoEventsUrl : 'http://ws.audioscrobbler.com/2.0/?method=geo.getevents',
+    geoTopArtistsUrl : 'http://ws.audioscrobbler.com/2.0/?method=geo.gettopartists&country=',
+    hypedArtistsUrl : 'http://ws.audioscrobbler.com/2.0/?method=chart.gethypedartists',
+
+    urlParams    : '&autocorrect=1&format=json&api_key=',
+    key          : '~'
+  },
+  googleGeocodingApi: {
+    url: 'https://maps.googleapis.com/maps/api/geocode/json',
+    urlParams: '?result_type=locality|country&latlng=',
+    key: '&key=~'
+  }
+};
+
+module.exports = params;
+
