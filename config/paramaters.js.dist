@@ -16,6 +16,11 @@ var params = {
     urlParams    : '&autocorrect=1&format=json&api_key=',
     key          : '~'
   },
+  eventfulApi: {
+    url: 'http://api.eventful.com/json/events/search?',
+    key: 'app_key=~',
+    urlParams: '&category=music'
+  },
   googleGeocodingApi: {
     url: 'https://maps.googleapis.com/maps/api/geocode/json',
     urlParams: '?result_type=locality|country&latlng=',
