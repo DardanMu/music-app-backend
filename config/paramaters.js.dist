@@ -2,7 +2,7 @@
 var params = {
   groovesharkApi: {
     url       : 'http://tinysong.com/s/',
-    urlParams : '?format=json&limit=10',
+    urlParams : '?format=json&limit=30',
     key       : '~'
   },
   lastFmApi: {
