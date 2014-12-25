@@ -40,7 +40,6 @@ exports.getArtist = function(req, res){
 
             res.json(artistData);
         }).fail(function(error){
-            //if any of the above promises fail, we come here...
             console.log(error);
             res.json(500, { error: "error" });
         });
